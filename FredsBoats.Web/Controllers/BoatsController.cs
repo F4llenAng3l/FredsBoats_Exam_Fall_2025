@@ -31,13 +31,26 @@ namespace FredsBoats.Web.Controllers
             var boat = await _context.Boats
                 .Include(b => b.Category)
                 .Include(b => b.BoatColour)
-                // We include this in anticipation of the exam task (Comments)
-                // but for now it will just prevent errors if the property exists
+                .Include(b => b.Comments)
                 .FirstOrDefaultAsync(m => m.BoatId == id);
 
             if (boat == null) return NotFound();
 
             return View(boat);
         }
+    }
+    [HTTPpost]
+    public async Task<IActionResult> AddComment(int BoatId, string Author, string Content)
+    {
+        var comment=new Comment
+        {
+            BoatId = BoatId,
+            Author = Author,
+            Content = Content,
+            CreatedAt = DateTime.Now
+        };
+        _content.Add(comment);
+        await _content.SaveChangesAsyncO();
+        return RedirectToAction("Details", new {id = BoatId});
     }
 }
