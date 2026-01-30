@@ -38,19 +38,19 @@ namespace FredsBoats.Web.Controllers
 
             return View(boat);
         }
-    }
-    [HTTPpost]
-    public async Task<IActionResult> AddComment(int BoatId, string Author, string Content)
-    {
-        var comment=new Comment
+        [HttpPost]
+     public async Task<IActionResult> AddComment(int BoatId, string Author, string Content)
+     {
+        var comment = new Comment
         {
             BoatId = BoatId,
             Author = Author,
             Content = Content,
             CreatedAt = DateTime.Now
         };
-        _content.Add(comment);
-        await _content.SaveChangesAsyncO();
+        _context.Add(comment);
+        await _context.SaveChangesAsync();
         return RedirectToAction("Details", new {id = BoatId});
+      }
     }
 }
